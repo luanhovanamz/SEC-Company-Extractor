@@ -29,3 +29,20 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+
+# Temporary files
+temp/
+
+# SEC downloaded/cache files
+cache/
+logs/
+output/
+
+# Local data
+data/*.json
