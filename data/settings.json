@@ -1,0 +1,25 @@
+﻿{
+    "application": {
+        "name": "SEC Company Extractor Professional",
+        "version": "0.1.0"
+    },
+    "sec": {
+        "search_api": "https://efts.sec.gov/LATEST/search-index",
+        "base_url": "https://www.sec.gov",
+        "request_timeout": 30,
+        "max_retry": 3,
+        "delay_seconds": 0.2,
+        "user_agent": "SEC Company Extractor (replace-with-your-email@example.com)"
+    },
+    "export": {
+        "output_folder": "output",
+        "excel_file": "companies.xlsx"
+    },
+    "worker": {
+        "thread_count": 5
+    },
+    "cache": {
+        "enabled": true,
+        "folder": "cache"
+    }
+}
