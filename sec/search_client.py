@@ -15,7 +15,9 @@ class SearchClient:
         self._http = http_client
 
     @staticmethod
-    def _extract_primary_document(record: dict[str, Any]) -> str:
+    def _extract_primary_document(
+        record: dict[str, Any],
+    ) -> str:
         """
         Extract the primary document from the SEC search record ID.
 
@@ -36,7 +38,9 @@ class SearchClient:
         return ""
 
     @staticmethod
-    def _extract_company_name(source: dict[str, Any]) -> str:
+    def _extract_company_name(
+        source: dict[str, Any],
+    ) -> str:
         """Extract a clean company name from display_names."""
 
         display_names = source.get("display_names", [])
@@ -46,8 +50,6 @@ class SearchClient:
 
         name = str(display_names[0]).strip()
 
-        # SEC display names often contain:
-        # COMPANY NAME (CIK 0001234567)
         marker = "  (CIK "
 
         if marker in name:
@@ -82,9 +84,25 @@ class SearchClient:
         """
         Search SEC filings and convert results into Filing objects.
 
-        The SEC endpoint currently returns up to 100 records for
-        this request pattern. The size/from arguments are retained
-        for future pagination support.
+        Parameters
+        ----------
+        form:
+            SEC filing form, for example 8-K.
+
+        state:
+            State code, for example ME.
+
+        start_date:
+            Search start date in YYYY-MM-DD format.
+
+        end_date:
+            Search end date in YYYY-MM-DD format.
+
+        from_index:
+            Pagination offset.
+
+        size:
+            Number of records requested per page.
         """
 
         params = {
@@ -93,6 +111,8 @@ class SearchClient:
             "filter_forms": form,
             "startdt": start_date,
             "enddt": end_date,
+            "from": from_index,
+            "size": size,
         }
 
         response = self._http.get(
@@ -103,7 +123,9 @@ class SearchClient:
         result = response.json()
 
         if not isinstance(result, dict):
-            raise ValueError("SEC Search API returned invalid JSON.")
+            raise ValueError(
+                "SEC Search API returned invalid JSON."
+            )
 
         hits = result.get("hits", {})
 
@@ -158,3 +180,7 @@ class SearchClient:
             filings.append(filing)
 
         return filings
+
+
+if __name__ == "__main__":
+    print("SearchClient module loaded successfully.")
